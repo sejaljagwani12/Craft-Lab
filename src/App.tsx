@@ -1,0 +1,494 @@
+import { useEffect } from 'react';
+import { motion } from 'motion/react';
+import { Instagram } from 'lucide-react';
+
+export default function App() {
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('in-view');
+      });
+    }, { threshold: 0.14 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    const cursorDot = document.querySelector('.cursor-dot') as HTMLElement;
+    const cursorRing = document.querySelector('.cursor-ring') as HTMLElement;
+    const hoverTargets = document.querySelectorAll('a, button, .btn, .card, .review-card, .proof-step');
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      if (cursorDot) {
+        cursorDot.style.left = `${x}px`;
+        cursorDot.style.top = `${y}px`;
+      }
+      if (cursorRing) {
+        cursorRing.style.left = `${x}px`;
+        cursorRing.style.top = `${y}px`;
+      }
+      document.documentElement.style.setProperty('--cursor-x', `${x}px`);
+      document.documentElement.style.setProperty('--cursor-y', `${y}px`);
+    };
+
+    const handleMouseEnter = () => document.body.classList.add('cursor-hover');
+    const handleMouseLeave = () => document.body.classList.remove('cursor-hover');
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    hoverTargets.forEach((el) => {
+      el.addEventListener('mouseenter', handleMouseEnter);
+      el.addEventListener('mouseleave', handleMouseLeave);
+    });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('mousemove', handleMouseMove);
+      hoverTargets.forEach((el) => {
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+      });
+    };
+  }, []);
+
+  return (
+    <>
+      <div className="bg-arts" aria-hidden="true">
+        <div className="bg-shape shape-a"></div>
+        <div className="bg-shape shape-b"></div>
+        <div className="bg-shape shape-c"></div>
+        <div className="bg-shape shape-d"></div>
+        <div className="bg-shape shape-e"></div>
+
+        <div className="bg-icon bg-icon-1">
+          <svg viewBox="0 0 80 80" fill="none"><path d="M18 54C28 34 34 28 56 18" className="stroke-base stroke-accent"/><circle cx="18" cy="54" r="7" className="stroke-base stroke-green"/><circle cx="56" cy="18" r="7" className="stroke-base stroke-gold"/></svg>
+        </div>
+        <div className="bg-icon bg-icon-2">
+          <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" className="stroke-base stroke-soft"/><circle cx="40" cy="40" r="7" className="stroke-base stroke-accent"/><path d="M58 40H72" className="stroke-base stroke-gold"/></svg>
+        </div>
+        <div className="bg-icon bg-icon-3">
+          <svg viewBox="0 0 80 80" fill="none"><path d="M18 52C18 39 29 29 42 29C55 29 65 39 65 52C65 64 54 72 42 78C29 72 18 64 18 52Z" className="stroke-base stroke-accent"/><path d="M42 28V12" className="stroke-base stroke-green"/></svg>
+        </div>
+        <div className="bg-icon bg-icon-4">
+          <svg viewBox="0 0 80 80" fill="none"><path d="M10 58C20 48 26 68 36 58C46 48 52 68 62 58" className="stroke-base stroke-gold coil"/></svg>
+        </div>
+        <div className="bg-icon bg-icon-5">
+          <svg viewBox="0 0 80 80" fill="none"><rect x="18" y="18" width="44" height="44" rx="12" className="stroke-base stroke-soft"/><path d="M28 45C36 31 44 31 52 45" className="stroke-base stroke-green"/></svg>
+        </div>
+      </div>
+
+      <div className="cursor-dot" aria-hidden="true"></div>
+      <div className="cursor-ring" aria-hidden="true"></div>
+
+      <header className="sticky top-0 z-30 backdrop-blur-[18px] bg-[#f8f6f2]/72 border-b border-[#2a2a2a]/10">
+        <div className="max-w-[1180px] mx-auto px-4 w-full flex items-center justify-between py-[18px] gap-4">
+          <a href="#home" className="flex items-center gap-3 min-w-0" aria-label="Craft Lab home">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#d36b4e]/15 to-[#8faf9a]/15 border border-[#2a2a2a]/10 grid place-items-center shadow-[0_20px_50px_rgba(34,34,34,0.08)] shrink-0">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 18C11 12 13 10 18 6" className="stroke-base stroke-accent"/>
+                <path d="M7 7C9.5 5 12 5 14 7C16 9 16 11.5 14 14" className="stroke-base"/>
+                <circle cx="6" cy="18" r="2.2" className="stroke-base stroke-green"/>
+                <circle cx="18" cy="6" r="2.2" className="stroke-base stroke-gold"/>
+              </svg>
+            </div>
+            <div className="leading-[1.1]">
+              <strong className="block text-base tracking-[0.04em]">CRAFT LAB</strong>
+              <span className="block text-xs text-muted">Crafting Ideas Into Art</span>
+            </div>
+          </a>
+
+          <nav className="hidden md:flex items-center gap-[22px] text-[0.95rem] text-muted" aria-label="Primary navigation">
+            <a href="#gallery" className="hover:text-text transition-colors">Gallery</a>
+            <a href="#library" className="hover:text-text transition-colors">Design Library</a>
+            <a href="#proof-order" className="hover:text-text transition-colors">Recreate</a>
+            <a href="#reviews" className="hover:text-text transition-colors">Reviews</a>
+            <a href="#contact" className="hover:text-text transition-colors">Contact</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section className="pt-[44px] pb-[28px]" id="home">
+          <div className="max-w-[1180px] mx-auto px-4 w-full relative z-10">
+            <div className="relative overflow-hidden rounded-[28px] md:rounded-[42px] border border-[#2a2a2a]/10 hero-shell-bg shadow-[0_20px_50px_rgba(34,34,34,0.08)] min-h-auto lg:min-h-[720px] isolate hero-shell-before reveal">
+              <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-[28px] items-center p-[28px_20px_20px] md:p-[72px_54px_54px] relative z-10">
+                <div>
+                  <div className="inline-flex items-center gap-[10px] px-[14px] py-[10px] rounded-full bg-white/70 border border-[#2a2a2a]/10 text-muted text-[0.82rem] mb-[20px]">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M6 12h12M12 6v12" className="stroke-base stroke-accent"/>
+                      <circle cx="12" cy="12" r="8" className="stroke-base stroke-soft"/>
+                    </svg>
+                    Handmade craft studio by Sejal Jagwani
+                  </div>
+
+                  <h1 className="m-0 text-[clamp(2.6rem,15vw,4rem)] md:text-[clamp(3.4rem,7vw,6.8rem)] leading-[0.96] tracking-[-0.05em]">
+                    CRAFT <span className="block text-accent">LAB</span>
+                  </h1>
+                  <p className="mt-[22px] max-w-[620px] text-[0.97rem] md:text-[1.08rem] leading-[1.85] text-muted">
+                    A modern craft brand where imaginative ideas turn into handmade décor, keychains, bouquets, and unique artistic pieces. The website UI feels like a living creative lab with soft motion, paper texture, and clean premium styling.
+                  </p>
+
+                  <div className="flex flex-wrap gap-[14px] mt-[28px]">
+                    <a href="#gallery" className="inline-flex items-center justify-center gap-[10px] rounded-full px-[22px] py-[14px] font-semibold transition-all duration-250 border border-transparent bg-text text-white hover:-translate-y-[2px] hover:shadow-[0_16px_30px_rgba(42,42,42,0.08)]">Explore Crafts</a>
+                    <a href="#custom" className="inline-flex items-center justify-center gap-[10px] rounded-full px-[22px] py-[14px] font-semibold transition-all duration-250 border border-[#2a2a2a]/10 bg-white/60 text-text hover:-translate-y-[2px] hover:shadow-[0_16px_30px_rgba(42,42,42,0.08)]">Custom Craft Request</a>
+                  </div>
+
+                  <div className="flex flex-wrap gap-[16px] mt-[28px]">
+                    <div className="p-[14px_16px] rounded-[20px] bg-white/60 border border-[#2a2a2a]/10 min-w-[155px]">
+                      <small className="block text-muted text-[0.74rem] mb-1">Speciality</small>
+                      <strong className="block text-[0.95rem] font-semibold">Spring-based craft art</strong>
+                    </div>
+                    <div className="p-[14px_16px] rounded-[20px] bg-white/60 border border-[#2a2a2a]/10 min-w-[155px]">
+                      <small className="block text-muted text-[0.74rem] mb-1">Focus</small>
+                      <strong className="block text-[0.95rem] font-semibold">Home décor & gifting</strong>
+                    </div>
+                    <div className="p-[14px_16px] rounded-[20px] bg-white/60 border border-[#2a2a2a]/10 min-w-[155px]">
+                      <small className="block text-muted text-[0.74rem] mb-1">Style</small>
+                      <strong className="block text-[0.95rem] font-semibold">Creative, light, premium</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative min-h-[390px] md:min-h-[460px] lg:min-h-[560px] rounded-[24px] md:rounded-[32px] lab-stage-bg border border-dashed border-[#2a2a2a]/10 overflow-hidden" aria-hidden="true">
+                  <div className="absolute rounded-full blur-[1px] opacity-70 animate-[float_9s_ease-in-out_infinite] w-[86px] h-[86px] bg-[#d36b4e]/20 top-[16%] right-[18%]"></div>
+                  <div className="absolute rounded-full blur-[1px] opacity-70 animate-[float_9s_ease-in-out_infinite] w-[120px] h-[120px] bg-[#8faf9a]/20 bottom-[18%] left-[18%] [animation-delay:-2s]"></div>
+                  <div className="absolute rounded-full blur-[1px] opacity-70 animate-[float_9s_ease-in-out_infinite] w-[54px] h-[54px] bg-[#e8b54b]/20 top-[42%] left-[6%] [animation-delay:-4s]"></div>
+
+                  <div className="absolute inline-flex items-center gap-2 px-[14px] py-[10px] rounded-full bg-white/75 border border-[#2a2a2a]/10 shadow-[0_12px_26px_rgba(42,42,42,0.06)] text-[0.82rem] text-text animate-[drift_7s_ease-in-out_infinite] backdrop-blur-[8px] top-[14%] left-[10%] [animation-delay:-0.8s]">Spring Craft</div>
+                  <div className="absolute inline-flex items-center gap-2 px-[14px] py-[10px] rounded-full bg-white/75 border border-[#2a2a2a]/10 shadow-[0_12px_26px_rgba(42,42,42,0.06)] text-[0.82rem] text-text animate-[drift_7s_ease-in-out_infinite] backdrop-blur-[8px] top-[10%] right-[4%] [animation-delay:-2.4s]">Keychains</div>
+                  <div className="absolute inline-flex items-center gap-2 px-[14px] py-[10px] rounded-full bg-white/75 border border-[#2a2a2a]/10 shadow-[0_12px_26px_rgba(42,42,42,0.06)] text-[0.82rem] text-text animate-[drift_7s_ease-in-out_infinite] backdrop-blur-[8px] bottom-[18%] left-[4%] [animation-delay:-1.4s]">Bouquets</div>
+                  <div className="absolute inline-flex items-center gap-2 px-[14px] py-[10px] rounded-full bg-white/75 border border-[#2a2a2a]/10 shadow-[0_12px_26px_rgba(42,42,42,0.06)] text-[0.82rem] text-text animate-[drift_7s_ease-in-out_infinite] backdrop-blur-[8px] bottom-[10%] right-[12%] [animation-delay:-3s]">Custom Ideas</div>
+
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 640 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g className="pulse">
+                      <rect x="170" y="120" width="300" height="310" rx="36" className="stroke-base stroke-soft" />
+                    </g>
+
+                    <g className="coil">
+                      <path d="M212 332C232 312 250 352 270 332C290 312 308 352 328 332C348 312 366 352 386 332C406 312 424 352 444 332" className="stroke-base stroke-accent"/>
+                      <path d="M212 292C232 272 250 312 270 292C290 272 308 312 328 292C348 272 366 312 386 292C406 272 424 312 444 292" className="stroke-base stroke-green"/>
+                    </g>
+
+                    <g className="swing-1">
+                      <path d="M324 96V168" className="stroke-base stroke-soft"/>
+                      <circle cx="324" cy="206" r="44" className="stroke-base stroke-gold"/>
+                      <path d="M295 206C303 190 317 181 324 181C331 181 345 190 353 206" className="stroke-base"/>
+                      <path d="M300 221C309 233 317 239 324 239C331 239 339 233 348 221" className="stroke-base stroke-accent"/>
+                    </g>
+
+                    <g className="bob">
+                      <path d="M225 187C225 172 238 160 255 160C272 160 286 172 286 187C286 204 271 213 255 228C239 213 225 204 225 187Z" className="stroke-base stroke-accent"/>
+                      <path d="M255 160V135" className="stroke-base stroke-green"/>
+                      <path d="M239 140C245 136 250 136 255 140" className="stroke-base stroke-green"/>
+                    </g>
+
+                    <g className="swing-2">
+                      <circle cx="464" cy="186" r="28" className="stroke-base stroke-soft"/>
+                      <circle cx="464" cy="186" r="11" className="stroke-base stroke-accent"/>
+                      <path d="M492 186H530" className="stroke-base stroke-gold"/>
+                      <path d="M530 186C544 186 551 176 551 165" className="stroke-base stroke-gold"/>
+                    </g>
+
+                    <g className="pulse">
+                      <path d="M197 404H443" className="stroke-base stroke-soft"/>
+                      <path d="M218 404C238 384 252 384 270 404" className="stroke-base"/>
+                      <path d="M284 404C304 384 318 384 336 404" className="stroke-base stroke-green"/>
+                      <path d="M350 404C370 384 384 384 402 404" className="stroke-base stroke-accent"/>
+                      <path d="M416 404C429 393 436 392 443 404" className="stroke-base stroke-gold"/>
+                    </g>
+
+                    <g className="bob">
+                      <path d="M153 237C165 228 185 228 196 237C207 246 207 264 196 274C185 285 165 285 153 274C143 264 143 246 153 237Z" className="stroke-base stroke-soft"/>
+                      <path d="M154 255H195" className="stroke-base stroke-accent"/>
+                      <path d="M174 235V275" className="stroke-base stroke-green"/>
+                    </g>
+
+                    <g className="pulse">
+                      <path d="M420 128C439 115 466 118 481 136C496 154 497 179 483 196" className="stroke-base stroke-soft"/>
+                      <path d="M431 140C444 132 460 133 470 145C480 157 480 172 472 183" className="stroke-base stroke-accent"/>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-[28px] md:py-[34px]" id="gallery">
+          <div className="max-w-[1180px] mx-auto px-4 w-full relative z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-[18px] mb-[22px] reveal">
+              <div>
+                <h2 className="m-0 text-[clamp(1.7rem,3vw,2.7rem)] tracking-[-0.04em] font-semibold">Interactive craft-inspired gallery blocks</h2>
+              </div>
+              <p className="max-w-[520px] m-0 text-muted leading-[1.8]">
+                Only essential sections are used here. Each block feels artistic, clean, and light, with SVG-based decorative motion instead of heavy visuals.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_0.75fr_0.9fr] gap-[18px]">
+              <article className="relative overflow-hidden rounded-[24px] md:rounded-[30px] min-h-[280px] card-bg border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_22px_44px_rgba(42,42,42,0.09)] card-before reveal">
+                <div className="relative z-10 h-full p-[28px] flex flex-col justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Handmade Décor</span>
+                    <h3 className="m-0 mb-2 text-[1.45rem] tracking-[-0.04em] font-semibold">Unique objects shaped by creative experiments</h3>
+                    <p className="m-0 text-muted leading-[1.75] max-w-[90%]">Use this featured block for your best craft image or signature product collection.</p>
+                  </div>
+                  <svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="w-full h-[150px] mt-4">
+                    <path d="M46 108C66 90 80 126 100 108C120 90 134 126 154 108C174 90 188 126 208 108C228 90 242 126 262 108" className="stroke-base stroke-accent coil"/>
+                    <rect x="98" y="34" width="130" height="70" rx="20" className="stroke-base stroke-soft"/>
+                    <path d="M120 82C138 60 148 60 164 82C181 103 194 104 206 82" className="stroke-base stroke-green"/>
+                  </svg>
+                </div>
+              </article>
+
+              <article className="relative overflow-hidden rounded-[24px] md:rounded-[30px] min-h-[280px] card-bg border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_22px_44px_rgba(42,42,42,0.09)] card-before reveal">
+                <div className="relative z-10 h-full p-[28px] flex flex-col justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Keychains</span>
+                    <h3 className="m-0 mb-2 text-[1.45rem] tracking-[-0.04em] font-semibold">Small details, bold identity</h3>
+                    <p className="m-0 text-muted leading-[1.75] max-w-[90%]">Perfect for product highlights, custom order previews, or new arrivals.</p>
+                  </div>
+                  <svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="w-full h-[150px] mt-4">
+                    <circle cx="120" cy="70" r="34" className="stroke-base stroke-soft bob"/>
+                    <circle cx="120" cy="70" r="13" className="stroke-base stroke-accent"/>
+                    <path d="M154 70H224" className="stroke-base stroke-gold"/>
+                    <path d="M224 70C245 70 258 56 258 38" className="stroke-base stroke-gold"/>
+                  </svg>
+                </div>
+              </article>
+
+              <article className="relative overflow-hidden rounded-[24px] md:rounded-[30px] min-h-[280px] card-bg border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_22px_44px_rgba(42,42,42,0.09)] card-before reveal">
+                <div className="relative z-10 h-full p-[28px] flex flex-col justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Bouquet Art</span>
+                    <h3 className="m-0 mb-2 text-[1.45rem] tracking-[-0.04em] font-semibold">Soft decorative forms with crafted texture</h3>
+                    <p className="m-0 text-muted leading-[1.75] max-w-[90%]">Ideal for gift-focused product storytelling and premium handmade collections.</p>
+                  </div>
+                  <svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="w-full h-[150px] mt-4">
+                    <path d="M98 102C98 84 113 70 132 70C151 70 166 84 166 102C166 120 150 130 132 143C114 130 98 120 98 102Z" className="stroke-base stroke-accent pulse"/>
+                    <path d="M132 70V36" className="stroke-base stroke-green"/>
+                    <path d="M112 44C120 38 126 38 132 44" className="stroke-base stroke-green"/>
+                    <path d="M152 44C144 38 138 38 132 44" className="stroke-base stroke-green"/>
+                    <path d="M176 112C191 97 202 129 217 112C232 97 243 129 258 112" className="stroke-base stroke-gold coil"/>
+                  </svg>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-[28px] md:py-[34px]" id="library">
+          <div className="max-w-[1180px] mx-auto px-4 w-full relative z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-[18px] mb-[22px] reveal">
+              <div>
+                <h2 className="m-0 text-[clamp(1.7rem,3vw,2.7rem)] tracking-[-0.04em] font-semibold">Design library for your craft collections</h2>
+              </div>
+              <p className="max-w-[520px] m-0 text-muted leading-[1.8]">
+                This section works like a visual catalog. Use it for your repeatable craft styles, collections, and signature handmade ideas.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[18px]">
+              <article className="relative overflow-hidden rounded-[24px] md:rounded-[30px] min-h-[230px] card-bg border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_22px_44px_rgba(42,42,42,0.09)] card-before reveal">
+                <div className="relative z-10 h-full p-[28px] flex flex-col justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Spring Frame</span>
+                    <h3 className="m-0 mb-2 text-[1.18rem] tracking-[-0.04em] font-semibold">Abstract wall décor craft</h3>
+                    <p className="m-0 text-muted leading-[1.75] max-w-full">For premium home décor designs with artistic wire and spring styling.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article className="relative overflow-hidden rounded-[24px] md:rounded-[30px] min-h-[230px] card-bg border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_22px_44px_rgba(42,42,42,0.09)] card-before reveal">
+                <div className="relative z-10 h-full p-[28px] flex flex-col justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Gift Piece</span>
+                    <h3 className="m-0 mb-2 text-[1.18rem] tracking-[-0.04em] font-semibold">Custom bouquet design</h3>
+                    <p className="m-0 text-muted leading-[1.75] max-w-full">Ideal for birthdays, festive gifting, and handcrafted surprise pieces.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article className="relative overflow-hidden rounded-[24px] md:rounded-[30px] min-h-[230px] card-bg border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_22px_44px_rgba(42,42,42,0.09)] card-before reveal">
+                <div className="relative z-10 h-full p-[28px] flex flex-col justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Mini Art</span>
+                    <h3 className="m-0 mb-2 text-[1.18rem] tracking-[-0.04em] font-semibold">Creative keychain series</h3>
+                    <p className="m-0 text-muted leading-[1.75] max-w-full">Compact, stylish handmade objects with a strong identity feel.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article className="relative overflow-hidden rounded-[24px] md:rounded-[30px] min-h-[230px] card-bg border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_22px_44px_rgba(42,42,42,0.09)] card-before reveal">
+                <div className="relative z-10 h-full p-[28px] flex flex-col justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Signature Craft</span>
+                    <h3 className="m-0 mb-2 text-[1.18rem] tracking-[-0.04em] font-semibold">One-of-one lab design</h3>
+                    <p className="m-0 text-muted leading-[1.75] max-w-full">Use this block to feature your most unique experimental artwork.</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-[28px] md:py-[34px]" id="proof-order">
+          <div className="max-w-[1180px] mx-auto px-4 w-full relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-[20px] items-stretch">
+              <div className="rounded-[24px] md:rounded-[32px] bg-white/60 border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] overflow-hidden relative cta-card-before reveal">
+                <div className="relative z-10 p-[34px]">
+                  <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Recreate Craft Order</span>
+                  <h2 className="m-0 mb-3 text-[clamp(2rem,3vw,3rem)] leading-none tracking-[-0.05em] font-semibold">Love a design? Book the exact same craft for yourself.</h2>
+                  <p className="m-0 text-muted leading-[1.8] max-w-[56ch]">
+                    If a client or visitor likes any craft from your gallery or design library, this section lets them request the same design with a custom size, quantity, or color style.
+                  </p>
+                  <div className="mt-[22px] grid gap-[12px]">
+                    <div className="flex gap-[12px] items-start p-[14px_16px] rounded-[18px] bg-white/50 border border-[#2a2a2a]/10">
+                      <strong className="inline-grid place-items-center w-[28px] h-[28px] rounded-full bg-[#d36b4e]/15 text-accent shrink-0 text-[0.9rem]">1</strong>
+                      <div>
+                        <h4 className="m-0 mb-1 text-base font-semibold">Select a design</h4>
+                        <p className="m-0 text-[0.95rem] text-muted">Customer chooses any visible craft from your gallery or craft library.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-[12px] items-start p-[14px_16px] rounded-[18px] bg-white/50 border border-[#2a2a2a]/10">
+                      <strong className="inline-grid place-items-center w-[28px] h-[28px] rounded-full bg-[#d36b4e]/15 text-accent shrink-0 text-[0.9rem]">2</strong>
+                      <div>
+                        <h4 className="m-0 mb-1 text-base font-semibold">Share customization</h4>
+                        <p className="m-0 text-[0.95rem] text-muted">They can request the same style with different colors, details, or quantity.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-[12px] items-start p-[14px_16px] rounded-[18px] bg-white/50 border border-[#2a2a2a]/10">
+                      <strong className="inline-grid place-items-center w-[28px] h-[28px] rounded-full bg-[#d36b4e]/15 text-accent shrink-0 text-[0.9rem]">3</strong>
+                      <div>
+                        <h4 className="m-0 mb-1 text-base font-semibold">Place the order</h4>
+                        <p className="m-0 text-[0.95rem] text-muted">You recreate that exact handmade craft specially for them.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-[14px] mt-[24px]">
+                    <a href="#contact" className="inline-flex items-center justify-center gap-[10px] rounded-full px-[22px] py-[14px] font-semibold transition-all duration-250 border border-transparent bg-text text-white hover:-translate-y-[2px] hover:shadow-[0_16px_30px_rgba(42,42,42,0.08)]">Order This Design</a>
+                    <a href="#library" className="inline-flex items-center justify-center gap-[10px] rounded-full px-[22px] py-[14px] font-semibold transition-all duration-250 border border-[#2a2a2a]/10 bg-white/60 text-text hover:-translate-y-[2px] hover:shadow-[0_16px_30px_rgba(42,42,42,0.08)]">Browse Design Library</a>
+                  </div>
+                </div>
+              </div>
+
+              <aside className="rounded-[24px] md:rounded-[32px] bg-white/60 border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] overflow-hidden relative cta-card-before reveal">
+                <div className="relative z-10 p-[34px]">
+                  <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">How it feels</span>
+                  <div className="grid gap-[14px]">
+                    <div className="p-[16px_18px] rounded-[20px] bg-white/50 border border-[#2a2a2a]/10">
+                      <h4 className="m-0 mb-[6px] text-base font-semibold">Same craft, handmade again</h4>
+                      <p className="m-0 text-[0.95rem] text-muted">Your client can choose a design they already liked and ask for the same handcrafted piece.</p>
+                    </div>
+                    <div className="p-[16px_18px] rounded-[20px] bg-white/50 border border-[#2a2a2a]/10">
+                      <h4 className="m-0 mb-[6px] text-base font-semibold">Custom details possible</h4>
+                      <p className="m-0 text-[0.95rem] text-muted">Adjust finish, size, bouquet style, color accents, or keychain format.</p>
+                    </div>
+                    <div className="p-[16px_18px] rounded-[20px] bg-white/50 border border-[#2a2a2a]/10">
+                      <h4 className="m-0 mb-[6px] text-base font-semibold">Easy conversion section</h4>
+                      <p className="m-0 text-[0.95rem] text-muted">This is a strong order-focused block that fits your custom craft business model.</p>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-[28px] md:py-[34px]" id="reviews">
+          <div className="max-w-[1180px] mx-auto px-4 w-full relative z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-[18px] mb-[22px] reveal">
+              <div>
+                <h2 className="m-0 text-[clamp(1.7rem,3vw,2.7rem)] tracking-[-0.04em] font-semibold">Customer reviews with handmade trust feel</h2>
+              </div>
+              <p className="max-w-[520px] m-0 text-muted leading-[1.8]">
+                Add real client feedback here later. For now this UI gives you a premium review layout with strong visual balance.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-[18px]">
+              <article className="rounded-[24px] md:rounded-[32px] bg-white/60 border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] overflow-hidden relative cta-card-before reveal">
+                <div className="relative z-10 p-[34px]">
+                  <div className="flex gap-[6px] mb-4 text-accent-3 text-lg">★ ★ ★ ★ ★</div>
+                  <p className="m-0 text-muted leading-[1.8] max-w-full">“The finishing was beautiful and the craft looked even better in real life. It felt premium, handmade, and very unique.”</p>
+                  <div className="mt-4 font-bold">Riya Sharma</div>
+                  <div className="text-muted text-[0.9rem] mt-1">Custom gift order</div>
+                </div>
+              </article>
+
+              <article className="rounded-[24px] md:rounded-[32px] bg-white/60 border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] overflow-hidden relative cta-card-before reveal">
+                <div className="relative z-10 p-[34px]">
+                  <div className="flex gap-[6px] mb-4 text-accent-3 text-lg">★ ★ ★ ★ ★</div>
+                  <p className="m-0 text-muted leading-[1.8] max-w-full">“I loved how creative the spring design looked. It was not a common craft piece and everyone asked where I got it from.”</p>
+                  <div className="mt-4 font-bold">Aman Verma</div>
+                  <div className="text-muted text-[0.9rem] mt-1">Home décor buyer</div>
+                </div>
+              </article>
+
+              <article className="rounded-[24px] md:rounded-[32px] bg-white/60 border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] overflow-hidden relative cta-card-before reveal">
+                <div className="relative z-10 p-[34px]">
+                  <div className="flex gap-[6px] mb-4 text-accent-3 text-lg">★ ★ ★ ★ ★</div>
+                  <p className="m-0 text-muted leading-[1.8] max-w-full">“The same design was recreated for me with custom colors, and the result was exactly what I wanted. Very neat handmade work.”</p>
+                  <div className="mt-4 font-bold">Neha Patel</div>
+                  <div className="text-muted text-[0.9rem] mt-1">Repeat customer</div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-[28px] md:py-[34px]" id="custom">
+          <div className="max-w-[1180px] mx-auto px-4 w-full relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-[20px] items-stretch">
+              <div className="rounded-[24px] md:rounded-[32px] bg-white/60 border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] overflow-hidden relative cta-card-before reveal">
+                <div className="relative z-10 p-[34px]">
+                  <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Custom Craft CTA</span>
+                  <h2 className="m-0 mb-3 text-[clamp(2rem,3vw,3rem)] leading-none tracking-[-0.05em] font-semibold">Have an idea? Let’s craft it into art.</h2>
+                  <p className="m-0 text-muted leading-[1.8] max-w-[56ch]">
+                    This section is designed for direct conversion. Keep it short, stylish, and focused on custom handmade requests.
+                  </p>
+                  <div className="flex flex-wrap gap-[14px] mt-[24px]">
+                    <a href="#contact" className="inline-flex items-center justify-center gap-[10px] rounded-full px-[22px] py-[14px] font-semibold transition-all duration-250 border border-transparent bg-text text-white hover:-translate-y-[2px] hover:shadow-[0_16px_30px_rgba(42,42,42,0.08)]">Request a Custom Design</a>
+                    <a href="#gallery" className="inline-flex items-center justify-center gap-[10px] rounded-full px-[22px] py-[14px] font-semibold transition-all duration-250 border border-[#2a2a2a]/10 bg-white/60 text-text hover:-translate-y-[2px] hover:shadow-[0_16px_30px_rgba(42,42,42,0.08)]">View Gallery</a>
+                  </div>
+                </div>
+              </div>
+
+              <aside className="rounded-[24px] md:rounded-[32px] bg-white/60 border border-[#2a2a2a]/10 shadow-[0_20px_50px_rgba(34,34,34,0.08)] overflow-hidden relative cta-card-before reveal" id="contact">
+                <div className="relative z-10 p-[34px]">
+                  <span className="inline-flex items-center gap-2 w-fit px-[12px] py-[9px] rounded-full bg-white/60 border border-[#2a2a2a]/10 text-muted text-[0.8rem] mb-4">Brand Identity</span>
+                  <h3 className="m-0 mb-3 text-[clamp(2rem,3vw,3rem)] leading-none tracking-[-0.05em] font-semibold">Craft Lab</h3>
+                  <p className="m-0 text-muted leading-[1.8] max-w-[56ch]">
+                    Crafting Ideas Into Art — a light-theme craft website concept with modern SVG motion, soft paper texture, clean UI rhythm, and a premium handmade feel.
+                  </p>
+                  <div className="mt-[18px] font-bold text-[1.05rem]">Founder: Sejal Jagwani</div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="py-[28px] md:py-[34px]">
+        <div className="max-w-[1180px] mx-auto px-4 w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-[18px] py-[26px] pb-[44px] text-muted relative z-10">
+          <div>
+            <strong className="block text-text mb-1 font-semibold">CRAFT LAB</strong>
+            <span className="text-sm">Crafting Ideas Into Art</span>
+          </div>
+
+          <div className="flex gap-[12px] flex-wrap" aria-label="Social media links">
+            <a href="#" aria-label="Instagram" className="w-[44px] h-[44px] grid place-items-center rounded-full bg-white/75 border border-[#2a2a2a]/10 transition-all duration-250 hover:-translate-y-[3px] hover:bg-white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="5" className="stroke-base"/><circle cx="12" cy="12" r="4" className="stroke-base stroke-accent"/><circle cx="17.4" cy="6.6" r="0.8" fill="currentColor"/></svg>
+            </a>
+            <a href="#" aria-label="Pinterest" className="w-[44px] h-[44px] grid place-items-center rounded-full bg-white/75 border border-[#2a2a2a]/10 transition-all duration-250 hover:-translate-y-[3px] hover:bg-white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4C7.6 4 5 7 5 10.8C5 13.3 6.4 15.1 8.2 15.1C8.9 15.1 9.5 14.2 9.5 13.7C9.5 13.1 8.8 12.9 8.8 11.3C8.8 8.7 10.7 6.9 13.2 6.9C15.4 6.9 17 8.1 17 10.4C17 13.1 15.9 15.9 13.5 15.9C12.5 15.9 11.8 15.1 12.1 14.1C12.5 12.8 13.2 11.4 13.2 10.4C13.2 9.5 12.7 8.8 11.7 8.8C10.3 8.8 9.2 10.3 9.2 12.1C9.2 13.1 9.6 13.9 9.6 13.9L8.3 19C8.1 19.9 8.2 21.1 8.3 22C9.1 20.9 10.1 19.3 10.3 18.5L10.9 16C11.4 16.9 12.8 17.6 14.2 17.6C18 17.6 20.7 14.1 20.7 10C20.7 6.4 17.6 4 12 4Z" className="stroke-base stroke-accent"/></svg>
+            </a>
+            <a href="#" aria-label="WhatsApp" className="w-[44px] h-[44px] grid place-items-center rounded-full bg-white/75 border border-[#2a2a2a]/10 transition-all duration-250 hover:-translate-y-[3px] hover:bg-white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19.1 4.9C17.2 3 14.7 2 12 2C6.5 2 2 6.5 2 12C2 13.8 2.5 15.5 3.4 17L2 22L7.2 20.7C8.6 21.5 10.2 22 12 22C17.5 22 22 17.5 22 12C22 9.3 21 6.8 19.1 4.9Z" className="stroke-base"/><path d="M8.8 7.9C9.1 7.2 9.4 7.2 9.7 7.2C9.9 7.2 10.1 7.2 10.3 7.2C10.5 7.2 10.8 7.1 11 7.6C11.3 8.3 11.9 9.7 11.9 9.8C11.9 9.9 12 10.2 11.8 10.5C11.6 10.8 11.4 11 11.2 11.2C11 11.4 10.8 11.6 11 11.9C11.2 12.2 11.8 13.1 12.7 13.9C13.8 14.9 14.8 15.3 15.2 15.5C15.5 15.6 15.7 15.6 15.9 15.4C16.2 15.1 16.7 14.6 17 14.2C17.2 13.9 17.5 13.9 17.8 14C18.1 14.1 19.8 14.9 20.1 15C20.4 15.2 20.6 15.3 20.7 15.5C20.8 15.8 20.8 17.1 20 17.9C19.2 18.7 18.3 19.1 17.2 19.2C16.1 19.3 14.8 18.9 12.1 17.8C9.2 16.5 7.4 13.1 7.2 12.8C7 12.6 6 11.2 6 9.7C6 8.2 6.8 7.4 7.2 7C7.6 6.7 8 6.7 8.2 6.7C8.4 6.7 8.5 6.7 8.8 7.9Z" className="stroke-base stroke-green"/></svg>
+            </a>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
+}
